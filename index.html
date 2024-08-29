@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Development</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        } 
+
+        nav {
+            background-color: rgba(51, 51, 51, 0.9);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+            position: relative;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        nav ul li a:hover {
+            background-color: #575757;
+            border-radius: 5px;
+            color: #ff5722;
+        }
+
+        nav ul li ul {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            background-color: #333;
+            display: none;
+            padding: 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+        }
+
+        nav ul li:hover ul {
+            display: block;
+        }
+
+        nav ul li ul li {
+            width: 150px;
+            text-align: left;
+        }
+
+        nav ul li ul li a {
+            padding: 10px 15px;
+            display: block;
+            font-size: 0.9em;
+        }
+
+        nav ul li ul li a:hover {
+            background-color: #ff5722;
+            color: white;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-right .sign-in {
+            margin-right: 20px;
+            padding: 10px 20px;
+            color: #fff;
+            border: 1px solid #ff5722;
+            background-color: transparent;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .nav-right .sign-in:hover {
+            background-color: #ff5722;
+            color: white;
+        }
+
+        .nav-right select {
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            font-size: 1em;
+        }
+
+        .search-bar button {
+            padding: 10px;
+            border: 1px solid #ff5722;
+            background-color: #ff5722;
+            color: white;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #e64a19;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            font-size: 1.1em;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: #e64a19;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .modal-content a {
+            display: block;
+            margin-top: 10px;
+            color: #ff5722;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .modal-content a:hover {
+            text-decoration: underline;
+        }
+
+
+        #hero {
+            background-image: url('1.avif');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 120px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-family: 'Open Sans', sans-serif;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 4px solid #fff;
+            animation: typing 4s steps(40, end), blink 0.75s step-end infinite, neonGlow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        
+        @keyframes neonGlow {
+            0% { text-shadow: 0 0 5px #ff5722, 0 0 10px #ff5722, 0 0 15px #ff5722, 0 0 20px #ff5722, 0 0 25px #ff5722, 0 0 30px #ff5722; }
+            50% { text-shadow: 0 0 10px #ff5722, 0 0 20px #ff5722, 0 0 30px #ff5722, 0 0 40px #ff5722, 0 0 50px #ff5722, 0 0 60px #ff5722; }
+            100% { text-shadow: 0 0 5px #ff5722, 0 0 10px #ff5722, 0 0 15px #ff5722, 0 0 20px #ff5722, 0 0 25px #ff5722, 0 0 30px #ff5722; }
+        }
+
+        .hero-content p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            font-family: 'Roboto', sans-serif;
+            animation: fadeInText 2s ease-in-out;
+        }
+
+        
+        @keyframes fadeInText {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hero-content button {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .hero-content button:hover {
+            background-color: #e64a19;
+            transform: translateY(-5px);
+        }
+ 
+/* About Section */
+        #about {
+            padding: 60px 20px;
+            background: linear-gradient(to right, #575757, #5d5d5d);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .about-background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 50%);
+            animation: lightAnimation 15s infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes lightAnimation {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        .about-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            animation: neon 1.5s ease-in-out infinite;
+        }
+
+        @keyframes neon {
+            0% { text-shadow: 0 0 5px #2004ac, 0 0 10px #ff5722, 0 0 15px #ff5722, 0 0 20px #ff5722, 0 0 25px #ff5722, 0 0 30px #ff5722; }
+            50% { text-shadow: 0 0 10px #2231ff, 0 0 20px #ff5722, 0 0 30px #ff5722, 0 0 40px #ff5722, 0 0 50px #ff5722, 0 0 60px #ff5722; }
+            100% { text-shadow: 0 0 5px #3c22ff, 0 0 10px #ff5722, 0 0 15px #ff5722, 0 0 20px #ff5722, 0 0 25px #ff5722, 0 0 30px #ff5722; }
+        }
+
+        .about-text {
+            max-width: 550px;
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+            z-index: 1;
+            color: #333;
+            animation: moveText 10s ease-in-out infinite;
+        }
+
+        @keyframes moveText {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .about-text h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-family: 'Open Sans', sans-serif;
+            color: #3c22ff;
+        }
+
+        .about-text p {
+            font-size: 1.2em;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            animation: moveText 10s ease-in-out infinite;
+        }
+
+        .about-image {
+            margin-left: 40px;
+            display: block;
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .about-image:hover {
+            transform: scale(1.05);
+        }
+
+        .about-text .learn-more {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            background-color: #4706dd;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .about-text .learn-more:hover {
+            background-color: #e64a19;
+            transform: translateY(-5px);
+        }
+
+        #about {
+            padding: 60px 20px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1.5s ease-in-out;
+            color: white; 
+        }
+
+        #about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('3.jpeg'); 
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5; 
+            z-index: 0;
+        }
+
+        
+        .about-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        #courses {
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+            color: #333;
+        }
+
+        
+        #courses::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('4.jpeg'); 
+            background-size: cover;
+            background-position: center;
+            opacity: 0.9; 
+            z-index: 0;
+        }
+
+        #courses::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5); 
+            z-index: 1;
+        }
+
+        .courses-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .courses-container h2 {
+            font-size: 3em;
+            margin-bottom: 40px;
+            font-family: 'Open Sans', sans-serif;
+            color: #ff5722; 
+            animation: colorChange 3s infinite alternate;
+        }
+
+        @keyframes colorChange {
+            0% { color: #ff5722; }
+            100% { color: #3c22ff; }
+        }
+
+        .courses-list {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        .course-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .course-item:active {
+            filter: brightness(1.1);
+            box-shadow: 0 0 20px #4e22ff, 0 0 40px #3822ff inset;
+        }
+
+        .course-item.active {
+            box-shadow: 0 0 20px #220901, 0 0 40px #240901 inset;
+            filter: brightness(1.2);
+        }
+
+        .course-item h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-family: 'Roboto', sans-serif;
+            color: #3c22ff; 
+        }
+
+        .course-item p {
+            font-size: 1em;
+            line-height: 1.7;
+            font-family: 'Roboto', sans-serif;
+            color: #555; 
+        }
+
+        .courses-container h2 {
+            font-size: 3em;
+            margin-bottom: 40px;
+            font-family: 'Open Sans', sans-serif;
+            color: #ff5722;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .course-item {
+            background-color: #d0cbcb;
+            padding: 30px;
+            width: 30%;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.5s ease, box-shadow 0.5s ease, filter 0.5s ease;
+            cursor: pointer;
+            position: relative;
+            animation: fadeInUp 1s ease-out;
+        }
+
+
+        .course-item:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+        .course-item:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+        .course-item:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .course-item h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-family: 'Roboto', sans-serif;
+            color: #3c22ff;
+            animation: textGlow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes textGlow {
+            0% {
+                text-shadow: 0 0 5px #ff5722;
+            }
+            50% {
+                text-shadow: 0 0 15px #ff5722;
+            }
+            100% {
+                text-shadow: 0 0 5px #ff5722;
+            }
+        }
+
+        .course-item p {
+            font-size: 1em;
+            line-height: 1.7;
+            font-family: 'Roboto', sans-serif;
+            color: #555;
+            opacity: 0;
+            animation: fadeInText 1s ease-out forwards;
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        #footer p {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @media (max-width: 768px) {
+            .nav-right {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-bar {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .search-bar input {
+                width: calc(100% - 90px);
+            }
+
+            .search-bar button {
+                width: 80px;
+            }
+
+            .about-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .about-image {
+                margin: 20px 0;
+                width: 80%;
+            }
+
+            .courses-list {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .course-item {
+                width: 80%;
+            }
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li>
+                <a href="#">Courses</a>
+                <ul>
+                    <li><a href="#html-css">HTML & CSS</a></li>
+                    <li><a href="#javascript">JavaScript</a></li>
+                    <li><a href="#responsive-design">Responsive Design</a></li>
+                </ul>
+            </li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="sign-in">Sign In</button>
+            <select>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+            </select>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+                <button>Search</button>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-content">
+            <h1>Welcome to Web</h1>
+            <h1>Development</h1>
+            <p>Learn to create stunning websites with our online courses.</p>
+            <button onclick="scrollToSection('about')">Get Started</button>
+        </div>
+    </section>
+    
+    
+
+    <section id="about">
+        <div class="about-background-animation"></div>
+        <div class="about-container">
+            <div class="about-text">
+                <h2>About Us</h2>
+                <p>We offer a wide variety of web development courses designed to help you build professional websites and applications. Our mission is to make web development accessible to everyone, whether you're a beginner or a seasoned developer.</p>
+                <p>Join us today and take your web development skills to the next level!</p>
+                <button class="learn-more" onclick="scrollToSection('courses')">Learn More</button>
+            </div>
+            <img src="2.jpg" alt="Profile Picture" class="about-image">
+        </div>
+    </section>
+
+
+
+    <section id="courses">
+        <div class="courses-container">
+            <h2>Our Courses</h2>
+            <div class="courses-list">
+                <div class="course-item" id="html-css">
+                    <h3>HTML & CSS Basics</h3>
+                    <p>Learn the fundamentals of web development with HTML and CSS, the building blocks of the web. By the end of this course, you'll be able to create your own static websites.</p>
+                </div>
+                <div class="course-item" id="javascript">
+                    <h3>JavaScript Essentials</h3>
+                    <p>Dive into JavaScript and learn how to add dynamic behavior to your websites. This course will teach you the core concepts of programming with JavaScript.</p>
+                </div>
+                <div class="course-item" id="responsive-design">
+                    <h3>Responsive Web Design</h3>
+                    <p>Create responsive websites that look great on any device. This course will show you how to use media queries and flexible layouts to design websites that work on all screen sizes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section id="footer">
+        <p>&copy; 2024 ICAL(Web Development). All Rights Reserved.</p>
+    </section>
+
+
+    <div class="modal" id="signInModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign In</h2>
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Password">
+            <button>Sign In</button>
+            <a href="#">Forgot Password?</a>
+            <a href="#">Sign Up</a>
+        </div>
+    </div>
+
+    <script>
+        const signInBtn = document.querySelector('.sign-in');
+        const modal = document.getElementById('signInModal');
+        const closeModal = document.querySelector('.close');
+
+        signInBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        const courseItems = document.querySelectorAll('.course-item');
+
+        courseItems.forEach(item => {
+            item.addEventListener('click', () => {
+                courseItems.forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
